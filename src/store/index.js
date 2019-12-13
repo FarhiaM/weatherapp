@@ -12,13 +12,23 @@ export default new Vuex.Store({
                     temp: null,
                     feels_like: null
                 },
-                name: String
+                name: null
             }
         },
-        error: null
+        error: null,
+        random: {
+            data: {
+                main: {
+                    temp: null,
+                    feels_like: null
+                },
+                name: null
+            }
+        },
     },
     getters: {
-        weatherResult: state => state.result
+        weatherResult: state => state.result,
+        random: state => state.result
     },
     mutations: {
         SET_RESULT_DATA(state, data) {
@@ -29,17 +39,29 @@ export default new Vuex.Store({
             state.result = null;
             state.error = data;
         },
+        SET_RANDOM_RESULT_DATA(state, data) {
+            state.error = false;
+            state.random = data;
+        },
     },
     actions: {
         async getWeatherResult({ commit, state }, searchText) {
             try {
-                const data = await axios.get('', {
+                const data = await axios.get('/weather', {
                     params: {
                         q: searchText
                     }
                 }).then(response => (state.result = response));
                 commit('SET_RESULT_DATA', data);
-                console.log('inside commit ---- dataaaa ', data)
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async getRandom({ commit, state }) {
+            try {
+                const data = await axios.get('http://geodb-free-service.wirefreethought.com/v1/geo/cities?hateoasMode=off', {
+                }).then(response => (state.random = response));
+                commit('SET_RANDOM_RESULT_DATA', data);
             } catch (error) {
                 console.log(error);
             }
