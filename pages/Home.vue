@@ -1,17 +1,20 @@
 <template>
   <div class="container">
-    <img alt="Weather logo" width="200" height="200" src="../src/assets/logo.png">
+    <img alt="Weather logo" width="200" height="200" src="../assets/logo.png">
     <div class="search">
       <label for="search-input">Search and get the current weather anywhere: </label>
       <input id="search-input" @keypress.enter="getSearchInput" type="search" name="search-input" autocomplete="off">
-      <span v-if="weatherResult !== '{}'">
-        <p>City / Country: <b>{{ weatherResult.data.name }}</b></p>
-        <p>Current weather: <b>{{ weatherResult.data.main.temp }}°C</b></p>
-        <p>What it feels like: <b>{{ weatherResult.data.main.feels_like }}°C</b></p>
+      <span v-if="weatherResult.name !== ''">
+        <p>City / Country: <b>{{ weatherResult.name }}</b></p>
+        <p>Current weather: <b>{{ weatherResult.main.temp }}°C</b></p>
+        <p>What it feels like: <b>{{ weatherResult.main.feels_like }}°C</b></p>
+      </span>
+      <span v-if="weatherResult.name == ''">
+        <p>Unfortunetly, the is no city located in the random position (dessert or sea probably)... please try again :(</p>
       </span>
     </div>
     <div class="random">
-      <p><em>Don't know what to search for? Here's a suggestion...</em></p>
+      <p><em>Don't know what to search for?</em></p>
       <a v-on:click="getRandomCity" class="lucky-button">I'm feeling lucky</a>
       <span>
         <!-- <p>City / Country: <b>{{random.data[0]}}</b></p> -->
@@ -49,12 +52,6 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -68,6 +65,15 @@ export default {
 img{
   margin-left:600px;
 }
+
+p{
+  margin: 10px;
+}
+.search{
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
 a.lucky-button{
   display:inline-block;
   padding:0.5em 3em;
