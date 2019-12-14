@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" width="200" height="200" src="./assets/logo.png">
-    <Home msg="Weather app"/>
+    <Home msg="Weather app" />
   </div>
 </template>
 
@@ -9,7 +8,7 @@
 import Home from './components/Home.vue'
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
     Home
   }
