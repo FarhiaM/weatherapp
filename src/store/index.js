@@ -16,19 +16,10 @@ export default new Vuex.Store({
             }
         },
         error: null,
-        random: {
-            data: {
-                main: {
-                    temp: null,
-                    feels_like: null
-                },
-                name: null
-            }
-        },
     },
     getters: {
         weatherResult: state => state.result,
-        random: state => state.result
+        randomCity: state => state.result,
     },
     mutations: {
         SET_RESULT_DATA(state, data) {
@@ -38,10 +29,6 @@ export default new Vuex.Store({
         SET_ERROR(state, data) {
             state.result = null;
             state.error = data;
-        },
-        SET_RANDOM_RESULT_DATA(state, data) {
-            state.error = false;
-            state.random = data;
         },
     },
     actions: {
@@ -54,16 +41,20 @@ export default new Vuex.Store({
                 }).then(response => (state.result = response));
                 commit('SET_RESULT_DATA', data);
             } catch (error) {
-                console.log(error);
+                commit('SET_RESULT_DATA', error);
             }
         },
-        async getRandom({ commit, state }) {
+        async getRandomInRange({ commit, state }, longtitude, latitude) {
             try {
-                const data = await axios.get('http://geodb-free-service.wirefreethought.com/v1/geo/cities?hateoasMode=off', {
-                }).then(response => (state.random = response));
-                commit('SET_RANDOM_RESULT_DATA', data);
+                const randomData = await axios.get('/weather', {
+                    params: {
+                        lon: longtitude,
+                        lat: latitude
+                    }
+                }).then(response => (state.result = response));
+                commit('SET_RESULT_DATA', randomData);
             } catch (error) {
-                console.log(error);
+                commit('SET_RESULT_DATA', error);
             }
         }
     },

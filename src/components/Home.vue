@@ -12,7 +12,7 @@
      <div class="random">
       <p><em>Don't know what to search for? Here's a suggestion...</em></p>
       <a class="lucky-button" v-on:click="getRandomCity">I'm feeling lucky</a>
-      <span v-if="random">
+      <span>
         <!-- <p>City / Country: <b>{{random.data[0]}}</b></p> -->
       </span>
     </div>
@@ -26,18 +26,23 @@ export default {
   name: "home",
   computed: {
     ...mapGetters(["weatherResult"]),
-    ...mapGetters(["random"])
+    ...mapGetters(["randomCity"]),
   },
   methods: {
     ...mapActions(["getWeatherResult"]),
-    ...mapActions(["getRandom"]),
+    ...mapActions(["getRandomCity"]),
     getSearchInput() {
       const userInput = this.$el.querySelector('input[name="search-input"]')
         .value;
       this.getWeatherResult(userInput);
     },
     getRandomCity() {
-      this.getRandom();
+      var randomLongtitude = this.getRandomInRange(-180,180,0);
+      var randomLatitude = this.getRandomInRange(-180,180,0);
+      this.getRandomInRange(randomLongtitude,randomLatitude);
+    },
+    getRandomInRange(from, to, fixed) {
+    return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
     }
   }
 };
